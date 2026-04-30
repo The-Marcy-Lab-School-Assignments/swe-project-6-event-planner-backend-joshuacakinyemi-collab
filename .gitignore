@@ -3,4 +3,4 @@ node_modules/
 
 # The server is intentionally excluded from this repo.
 # Students will build the entire backend from scratch.
-server/
+
