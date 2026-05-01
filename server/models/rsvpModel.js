@@ -66,7 +66,7 @@ module.exports.update = async (event_id, rsvp_id) => {
     WHERE rsvp_id = $2
     RETURNING rsvp_id, event_id
   `;
-  const { rows } = await pool.query(query, [rsvp_id, event_id]);
+  const { rows } = await pool.query(query, [event_id, rsvp_id]);
   return rows[0] || null;
 };
 

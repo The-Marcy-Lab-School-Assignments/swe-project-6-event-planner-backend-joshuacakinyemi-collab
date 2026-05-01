@@ -17,7 +17,10 @@ const updateUser = async (req, res, next) => {
 
     // The user_id is in the URL, so we can compare it directly to req.session.userId
     if (!req.session.userId) {
-      return res.status(401).send({ message: 'You must be logged in to create an event.' });
+      return res.status(401).send({ message: 'You must be logged in.' });
+    }
+    if (userId !== req.session.userId) {
+      return res.status(403).send({ message: 'You can only update your own account.' });
     }
 
     const { password } = req.body;
@@ -35,6 +38,9 @@ const deleteUser = async (req, res, next) => {
     const userId = Number(req.params.user_id);
 
     // The user_id is in the URL, so we can compare it directly to req.session.userId
+    if (!req.session.userId) {
+      return res.status(401).send({ message: 'You must be logged in.' });
+    }
     if (userId !== req.session.userId) {
       return res.status(403).send({ message: 'You can only delete your own account.' });
     }

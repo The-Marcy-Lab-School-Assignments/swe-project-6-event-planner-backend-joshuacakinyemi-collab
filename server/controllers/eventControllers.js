@@ -47,6 +47,9 @@ const updateEvent = async (req, res, next) => {
     if (!existing) return res.status(404).send({ message: 'Event not found' });
 
     // Ownership check — the bookmark's user_id must match the session userId
+    if (!req.session.userId) {
+      return res.status(401).send({ message: 'You must be logged in.' });
+    }
     if (existing.user_id !== req.session.userId) {
       return res.status(403).send({ message: 'You can only update your own events.' });
     }
@@ -67,8 +70,11 @@ const deleteEvent = async (req, res, next) => {
     const existing = await eventModel.find(eventId);
     if (!existing) return res.status(404).send({ message: 'Event not found' });
 
+    if (!req.session.userId) {
+      return res.status(401).send({ message: 'You must be logged in.' });
+    }
     if (existing.user_id !== req.session.userId) {
-      return res.status(403).send({ message: 'You can only delete your own Events.' });
+      return res.status(403).send({ message: 'You can only update your own events.' });
     }
 
     const event = await eventModel.destroy(eventId);
